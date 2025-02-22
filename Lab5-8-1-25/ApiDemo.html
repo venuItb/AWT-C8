@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #E1F5FE; /* Soft blue background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the content */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for a modern look */
+            width: 100%;
+            max-width: 400px; /* Restrict width */
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #66BB6A; /* Slightly lighter green when focused */
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        #Temp-info {
+            margin-top: 20px;
+            padding: 20px;
+            font-size: 20px;
+            background-color: #F3F4F6;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            margin: 0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .error p {
+            color: #D32F2F; /* Red color for error messages */
+        }
+
+        .success p {
+            color: #388E3C; /* Green color for success messages */
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Weather App</h1>
+    <div>
+    <input type="text" id="location" placeholder="Enter location">
+    <button onclick="getTemperature()">Get Temperature</button>
+    </div>
+    <div id="Temp-info"></div>
+</body>
+<script>
+    function getTemperature(){
+        const loc=document.getElementById("location");
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${loc.value}&units=metric&appid=efa9f8b8f67521c72fb3942d5afd3961`)
+        .then(response=>response.json())
+        .then(data=>{
+            if(data.cod===200){
+                const temp=data.main.temp;
+                document.getElementById("Temp-info").innerHTML=`<p>Tempearture in ${data.name} is ${temp} C</p>`;
+            }
+            else{
+                document.getElementById("Temp-info").innerHTML=`<p>Location not found</p>`;
+            }
+        })
+        .catch(error=>{
+            document.getElementById("Temp-info").innerHTML=`<p>Error in Fetching data. please try again</p>`;
+        });
+    }
+</script>
+</html>
